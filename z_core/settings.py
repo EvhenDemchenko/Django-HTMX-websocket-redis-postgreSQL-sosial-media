@@ -1,5 +1,5 @@
 from pathlib import Path
-from django.conf.global_settings import INTERNAL_IPS
+from django.conf.global_settings import CSRF_TRUSTED_ORIGINS, INTERNAL_IPS
 from environ import Env
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -17,7 +17,9 @@ DEBUG = True
 # else:
 #     DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['friend-book-ssm.onrender.com','localhost', '127.0.0.1' ]
+
+CSRF_TRUSTED_ORIGINS =["https://friend-book-ssm.onrender.com"]
 
 INTERNAL_IPS=[
     '127.0.0.1',
