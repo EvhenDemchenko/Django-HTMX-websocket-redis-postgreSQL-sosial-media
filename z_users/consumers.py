@@ -10,20 +10,18 @@ from asgiref.sync import async_to_sync
 from django.template.loader import render_to_string
 import json
 
-import async_timeout
 
 class CommentConsumer(WebsocketConsumer):
-    async def connect(self):
-        async with async_timeout.timeout(10):
-            self.user = self.scope['user']
-            self.post_id = self.scope['url_route']['kwargs']['post_id']
-            self.post = get_object_or_404(Post , id = self.post_id)
+    def connect(self):
+        self.user = self.scope['user']
+        self.post_id = self.scope['url_route']['kwargs']['post_id']
+        self.post = get_object_or_404(Post , id = self.post_id)
 
-            await self.channel_layer.group_add(
-                self.post_id, self.channel_name
-            )
+        async_to_sync(self.channel_layer.group_add)(
+            self.post_id, self.channel_name
+        )
 
-            self.accept()
+        self.accept()
 
     def disconnect(self, code):
 

@@ -32,7 +32,7 @@
 
    {% block javascript %}
    {% endblock javascript %}
-  {% if request.user.is_authenticated %}
+  {% comment %} {% if request.user.is_authenticated %}
         <footer class="hidden"
             hx-ext="ws"
             ws-connect="/ws/online-status/">
@@ -44,6 +44,6 @@
         ws-connect="/ws/notifications/"
         ></div>        
 
-{% endif %} 
+{% endif %}  {% endcomment %}
 </body>
 </html>
