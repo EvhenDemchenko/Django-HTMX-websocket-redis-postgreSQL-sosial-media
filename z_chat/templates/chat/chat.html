@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <a class=" mt-2 btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" href="{% url 'posts:post-feed' %}">  Feed  </a>
+</div>
+<!-- component -->
+<div class="container bg-white mt-4 flex-1 p:2 sm:p-6 justify-between flex flex-col h-[90vh]">
+    <div class="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
+
+       <div id="online_in_chat">online</div> 
+       {% if chat.admin == request.user  %}
+        <a  class="btn btn-primary" href=" {% url 'chat:chat-edit' chat.chat_name %} ">
+            Edit chat
+        </a>
+        {% else %}
+            {% if chat.group_chat_name %}
+                <a class="btn btn-danger" href="{% url 'chat:chat-leave' chat.id %}"> Leave chat </a>
+            {% endif %}
+        {% endif%}
+        </div>
+
+
+
+    <div id="chat_messages" class="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
+        
+        {% for message in chat_messages %}
+            {% include "chat/message.html" %}
+        {% endfor %}   
+
+    </div>
+
+
+<form method="post" enctype="multipart/form-data"
+    id='file_upload'
+    hx-post="{% url 'chat:chat-file-upload' chat_name %}"
+    hx-target="#chat_messages"
+    hx-swap="beforeend"
+    _="on htmx:afterRequest reset() me"
+    >
+    {% csrf_token %}
+    {{form.image}}
+     <label  for="id_image" type="button" class="inline-flex items-center justify-center rounded-full h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6 text-gray-600">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+        </svg>
+        </label>
+
+        <button id="submit_file_btn" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded" type="submit"> Send file</button>
+</form>
+<div class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
+
+<form 
+        hx-ext="ws"
+        ws-connect="/ws/chat/{{chat_name}}"
+        ws-send
+        _="on htmx:wsAfterSend reset() me"
+        class="relative flex">
+         {{form.body}}
+          <div class=" right-0 items-center inset-y-0  flex flex-row   ">
+                <button type="submit" class="inline-flex items-center justify-center rounded-lg px-2 py-3 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none">
+                    <span class="font-bold">Send</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-6 w-6 ml-2 transform rotate-90">
+                       <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+                    </svg>
+                 </button>
+          </div>
+</form>
+
+    </div>
+</div>
+ 
+ <style>
+    .scrollbar-w-2::-webkit-scrollbar {
+    width: 0.25rem;
+    height: 0.25rem;
+    }
+    
+    .scrollbar-track-blue-lighter::-webkit-scrollbar-track {
+    --bg-opacity: 1;
+    background-color: #f7fafc;
+    background-color: rgba(247, 250, 252, var(--bg-opacity));
+    }
+    
+    .scrollbar-thumb-blue::-webkit-scrollbar-thumb {
+    --bg-opacity: 1;
+    background-color: #edf2f7;
+    background-color: rgba(237, 242, 247, var(--bg-opacity));
+    }
+    
+    .scrollbar-thumb-rounded::-webkit-scrollbar-thumb {
+    border-radius: 0.25rem;
+    }
+ </style>
+
+ {% endblock content %}
+
+{% block javascript %} 
+ <script>
+     function scrollToBottom(){
+        var elem = document.getElementById('chat_messages');
+        elem.scrollTop = elem.scrollHeight;
+    }
+    scrollToBottom();
+
+        function toggleSubmitButton(){
+            var input = document.getElementById('id_image');
+            input.classList.add("hidden");
+
+            var submitButton = document.getElementById("submit_file_btn");
+            submitButton.classList.add("hidden");            
+            var form = document.getElementById("file_upload");
+
+            form.addEventListener('submit', async function() {
+                submitButton.classList.add("hidden");
+            });
+            
+
+
+            input.addEventListener('change', function() {
+                if (input.files.length > 0) {
+                    submitButton.classList.remove("hidden");
+                } else {
+                    submitButton.classList.add("hidden");
+                }
+            });
+        }
+        
+        toggleSubmitButton(); 
+    </script>
+    
+    
+
+{% endblock javascript %}

@@ -1,0 +1,44 @@
+{% comment %} 
+{% if notification or notifications.count %}
+    <ul class="absolute right-0 mt-2 py-2 w-48 bg-gray-800 z-999 rounded-md shadow-lg" x-show="open" @click.outside="open = false" @keydown.escape="open = false">
+        <li><a 
+            href="{% url 'users:profile-clear-notifications' request_user.id %}" 
+            class="cursor-pointer block px-4 py-2 text-white hover:bg-gray-700"> clear notifications</a></li>
+    </ul>
+{% endif %} {% endcomment %}
+
+<ul id="notifications-menu"  hx-swap-oob="afterbegin" 
+ class="absolute top-[90px] right-0 mt-2 py-2 w-48 bg-gray-800 z-999 rounded-md shadow-lg" x-show="open" @click.outside="open = false" @keydown.escape="open = false">
+
+    {% if notification and notification.receiver == user %}
+    <li><a href="{% url "users:profile-clear-current-notification" notification.receiver.id notification.id %}" class="block px-4 py-2 text-white hover:bg-gray-700">
+    {{notification.body}}
+            </a></li>
+
+        {% else %}
+    
+        {% for notification in notifications %}
+            <li><a  href="{% url "users:profile-clear-current-notification" notification.receiver.id notification.id %}" class="block px-4 py-2 text-white hover:bg-gray-700">       
+                {{notification.body}}
+            </a></li>
+        {% endfor %}
+    {%endif%}
+</ul>
+
+<div id="dropdown-notification-status"   class="absolute top-[-5px]  left-[-5px] z-99">
+    <style>а 
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+    
+    {% if  notifications.count > 0 or user_notifications.count > 0  %}
+        <div style="animation: fadeIn 0.3s ease-in-out;" class="red-dot fade-in-up">
+        </div>
+    {% endif %}
+</div>

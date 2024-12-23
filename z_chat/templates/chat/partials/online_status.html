@@ -1,0 +1,22 @@
+<span id="online_count" 
+    hx-swap-oob="outerHTML"
+    hx-target="#online_count"
+    > {{online_count}}
+</span>
+
+<div id="dropdown-online-chat_status"  class="absolute top-[-5px]  left-[-5px] z-99">
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+    {% if online_in_chats %}
+        <div style="animation: fadeIn 0.3s ease-in-out;" class="green-dot fade-in-up"></div>
+    {% endif %}
+</div>
+

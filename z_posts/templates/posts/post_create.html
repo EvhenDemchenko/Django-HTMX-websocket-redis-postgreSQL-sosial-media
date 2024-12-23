@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+    <div class="container mx-auto max-w-xl mt-5">
+        <div class="bg-gray-100 border border-gray-300 rounded-lg shadow-md">
+            <div class="p-4">
+                <h1 class="text-xl font-bold text-gray-800 mb-4">Crete Post</h1>
+                <form method="post" enctype="multipart/form-data" class="space-y-4">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    {{ form.media }}
+                    <div class="flex justify-end">
+                        <button type="submit" class="bg-blue-400 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full">Create post </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+

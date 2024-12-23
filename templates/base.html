@@ -1,0 +1,49 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.2"></script> <!-- for htmx -->
+    <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"></script>
+    <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
+    <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.22.0.js"></script>
+    {% if debug %}
+      <link rel="stylesheet" href="{% static 'styles/main.css' %}" />
+    {% else %}
+      <link rel="stylesheet" href="{% static 'styles/main.min.css' %}" />
+    {% endif %}
+  <!-- Material Icons Link -->
+  <link
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet"
+  />
+   <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js"></script>
+    {{ form.media }}
+    <title>Document</title>
+</head>
+<body>
+    {% include "navbar.html" %}
+    
+   {% block content %}
+   {% endblock content %}
+
+   {% block javascript %}
+   {% endblock javascript %}
+  {% if request.user.is_authenticated %}
+        <footer class="hidden"
+            hx-ext="ws"
+            ws-connect="/ws/online-status/">
+        </footer>
+        
+        
+        <div class='hidden'
+        hx-ext="ws"
+        ws-connect="/ws/notifications/"
+        ></div>        
+
+{% endif %} 
+</body>
+</html>

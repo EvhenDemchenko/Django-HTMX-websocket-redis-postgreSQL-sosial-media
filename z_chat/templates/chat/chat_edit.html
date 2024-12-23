@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-3xl text-center mt-5 text-green-800 ">Edit profile</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="text-lg mt-4"> Choos members that you want to delete from chat </div>
+        {% for member in chat.members.all %}
+            {% if member.id != chat.admin.id %}
+                <div class="flex items-center gap-2 py-2">
+                    <input type="checkbox" name="members" value="{{member.id}}" id="{{member.id}}">
+                    <label class="text-lg" for="{{member.id}}"> {{member.profile.name}} </label>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <button class="btn btn-primary" type="submit"> save changes </button>
+    </form>
+    <a class="btn btn-danger mt-4" href="{% url 'chat:chat-delete' chat.chat_name%}"> Delete chat</a>
+</div>
+{% endblock content%}

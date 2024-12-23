@@ -1,0 +1,53 @@
+<!-- component -->
+{% if is_paginated %}
+<nav class="mb-10">
+    <ul class="flex">
+        {% if page_obj.has_previous %}
+        <li>
+            <a
+              class="mx-1 flex h-9 w-9 items-center justify-center rounded-full border border-blue-gray-100 bg-transparent p-0 text-sm text-blue-gray-500 transition duration-150 ease-in-out hover:bg-light-300"
+              href="?page={{ page_obj.previous_page_number }}"
+              aria-label="Previous"
+            >
+              <span class="material-icons text-sm">keyboard_arrow_left</span>
+            </a>
+        </li>
+        {% endif %}
+        {% for page_num in page_obj.paginator.page_range %}
+        {% if page_num == page_obj.number %}
+        <li>
+            <a
+              class="mx-1 flex h-9 w-9 items-center justify-center rounded-full bg-pink-500 p-0 text-sm text-white shadow-md transition duration-150 ease-in-out"
+              href="?page={{ page_num }}"
+            >
+              {{ page_num }}
+            </a>
+        </li>
+        {% else %}
+        <li>
+            <a
+              class="mx-1 flex h-9 w-9 items-center justify-center rounded-full border border-blue-gray-100 bg-transparent p-0 text-sm text-blue-gray-500 transition duration-150 ease-in-out hover:bg-light-300"
+              href="?page={{ page_num }}"
+            >
+              {{ page_num }}
+            </a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li>
+            <a
+              class="mx-1 flex h-9 w-9 items-center justify-center rounded-full border border-blue-gray-100 bg-transparent p-0 text-sm text-blue-gray-500 transition duration-150 ease-in-out hover:bg-light-300"
+              href="?page={{ page_obj.next_page_number }}"
+              aria-label="Next"
+            >
+              <span class="material-icons text-sm">keyboard_arrow_right</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+
+  

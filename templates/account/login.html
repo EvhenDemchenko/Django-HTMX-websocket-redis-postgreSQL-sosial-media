@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load allauth account %}
+{% block head_title %}
+{% trans "Sign In" %}
+{% endblock head_title %}
+{% block content %}
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="w-full max-w-md">
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <div class="p-6">
+                <h1 class="text-center text-3xl font-bold text-blue-500 mb-6">{% trans "Welcome back!" %}</h1>
+                <p class="text-center text-sm text-gray-600 mb-4">
+                    {% blocktranslate %}Enter your username and password to sign in.{% endblocktranslate %}
+                </p>
+                {% if not SOCIALACCOUNT_ONLY %}
+                    <p class="text-center text-sm text-gray-600 mb-4">
+                        {% blocktranslate %}If you have not created an account yet, please <a href="{{ signup_url }}" class="text-blue-500 hover:underline font-bold">sign up</a> first.{% endblocktranslate %}
+                    </p>
+                    {% url 'account_login' as login_url %}
+                    <form method="post" action="{{ login_url }}" class="space-y-4">
+                        {% csrf_token %}
+                        <div>
+                            {% element fields form=form unlabeled=True %}
+                            {% endelement %}
+                            {{ redirect_field }}
+                        </div>
+                        <button type="submit" class="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 font-semibold">{% trans "Sign In" %}</button>
+                    </form>
+                {% endif %}
+                {% if LOGIN_BY_CODE_ENABLED or PASSKEY_LOGIN_ENABLED %}
+                    <hr class="my-4">
+                    <div class="space-y-2">
+                        {% if PASSKEY_LOGIN_ENABLED %}
+                            <button type="submit" form="mfa_login" id="passkey_login" class="w-full py-2 border border-blue-500 text-blue-500 rounded hover:bg-blue-100 font-semibold">{% trans "Sign in with a passkey" %}</button>
+                        {% endif %}
+                        {% if LOGIN_BY_CODE_ENABLED %}
+                            <a href="{{ request_login_code_url }}" class="w-full block py-2 border border-blue-500 text-blue-500 rounded hover:bg-blue-100 text-center font-semibold">{% trans "Mail me a sign-in code" %}</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {% if SOCIALACCOUNT_ENABLED %}
+                    {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block extra_body %}
+    {{ block.super }}
+    {% if PASSKEY_LOGIN_ENABLED %}
+        {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
+    {% endif %}
+{% endblock %}
+

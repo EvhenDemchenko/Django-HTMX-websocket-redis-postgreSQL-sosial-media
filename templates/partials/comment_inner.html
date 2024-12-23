@@ -1,0 +1,57 @@
+{% comment %} <div class="flex items-start space-x-4">
+    <div class="flex-1">
+        <div class="bg-white p-4 rounded-lg shadow">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <span class="text-lg font-semibold">{{comment.author.username}}</span>
+                </div>
+                <div class="flex items-center">
+                    <a class="text-blue-500 hover:text-blue-700"
+                        hx-get="{% url 'comments:comment-like' comment.post.id  comment.id %}"
+                        hx-target="#comment-count-{{comment.id}}"
+                        hx-swap="innerHTML"
+                    >
+                        <span class="btn btn-primary" id="comment-{{comment.id}}">like comment</span>
+                    </a> 
+                </div>
+            </div>
+            <span id="comment-count-{{comment.id}}"> {{comment.like.count}} </span> 
+            <p class="mt-2">{{comment.body|truncatewords:15}}</p>
+        </div>
+    </div>
+</div>  {% endcomment %}
+
+
+
+<div class="text-sm mb-2 mt-2 flex flex-start items-center fade-in-up ">
+    <div>
+        <a href="{% url 'users:profile' comment.author.username %}" class="cursor-pointer flex items-center text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
+            <img class="h-8 w-8 rounded-full object-cover"
+            src="{% if comment.author.profile.image %}{{comment.author.profile.image.url}}{% endif %}"
+            alt="user" />
+        </a>
+    </div>
+    <p class="font-bold ml-2">
+        <a class="cursor-pointer">{{comment.author.username}}:</a>
+        <span class="text-gray-700 font-medium ml-1">
+            {{comment.body}}
+        </span>
+    </p>
+</div>
+
+<style>
+    .fade-in-up {
+        animation: fadeInUp 0.5s ease-in-out;
+        
+    }
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }}
+</style>

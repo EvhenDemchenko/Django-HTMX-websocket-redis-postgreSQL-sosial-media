@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load allauth i18n %}
+{% block head_title %}
+    {% trans "Sign Up" %}
+{% endblock head_title %}
+{% block content %}
+    <div class="container mx-auto flex items-center justify-center min-h-screen">
+        <div class="flex flex-col w-full md:w-1/2 lg:w-1/3 p-6 bg-white rounded-lg shadow-lg">
+            <h1 class="text-3xl font-bold text-center text-sky-500 mb-4">{% trans "Sign Up" %}</h1>
+            <p class="text-center text-sm text-gray-600 mb-4">{% blocktranslate %}Already have an account? Then please <a href="{{ login_url }}" class="text-sky-500 hover:underline font-bold">sign in</a>.{% endblocktranslate %}</p>
+            {% if not SOCIALACCOUNT_ONLY %}
+                <form method="post" action="{% url 'account_signup' %}" class="space-y-4">
+                    {% csrf_token %}
+                    <div class="space-y-2">
+                        {% element fields form=form unlabeled=True %}
+                        {% endelement %}
+                        {{ redirect_field }}
+                    </div>
+                    <button type="submit" class="w-full py-3 font-bold text-white bg-sky-500 hover:bg-sky-600 rounded-full focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-white">{% trans "Sign Up" %}</button>
+                </form>
+            {% endif %}
+            {% if PASSKEY_SIGNUP_ENABLED %}
+                <hr class="my-4">
+                <a href="{% url 'account_signup_passkey' %}" class="w-full py-3 font-bold text-white bg-sky-500 hover:bg-sky-600 rounded-full focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-white">{% trans "Sign up using a passkey" %}</a>
+            {% endif %}
+            {% if SOCIALACCOUNT_ENABLED %}
+                {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}
+

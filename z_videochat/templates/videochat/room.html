@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <a class=" mt-2 btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" href="{% url 'videochat:index' %}">  Create new video room  </a>
+</div>
+<main  >
+    <section id="room-name-wrapper">
+        <p>Room Name <span id="room-name"> </span> </p>
+    </section>
+
+    <section id="video-streams"></section>
+
+    <section id="controls-wrapper">
+        
+        <div class="icon-wrapper" id="mice-btn">
+            <img  class="control-icon" src="{% static 'images/microphone.svg' %}" alt="">
+        </div>
+
+        <div class="icon-wrapper" id="camera-btn" >
+            <img class="control-icon" src="{% static 'images/video.svg' %}" alt="">
+        </div>
+
+        {% comment %} <div class="icon-wrapper" id="leave-btn" >
+            <img class="control-icon" id="leave-btn-icon" src="{% static 'images/leave.svg' %}" alt="">
+        </div> {% endcomment %}
+        <button id="leave-btn"> Leave Room </button>
+
+    </section>
+
+</main>
+
+{% endblock content %}
+
+{% block javascript %}
+    <script type="text/javascript" src="{% static "js/streams.js"%}"> </script> 
+{% endblock javascript %}
+

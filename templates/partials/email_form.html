@@ -1,0 +1,11 @@
+
+<form class="flex flex-row gap-2 " method="post" action="{% url 'users:profile-email-edit' %}" autofocus="true">
+    {% csrf_token %}
+    {{form.email}}
+    <button type="submit" class=" cursor-pointer border-gray-300 px-2 border rounded ml-2"> save change</button>
+</form>
+
+<a hx-swap-oob="true" id="email-edit" href="{% url 'users:profile' request.user.username %}" class="btn btn-secondary ml-2"> Cancel</a>
+
+
+

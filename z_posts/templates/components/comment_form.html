@@ -1,0 +1,12 @@
+<form class="flex items-between" 
+    hx-ext="ws"
+    ws-connect="/ws/comment/{{post.id}}"
+    ws-send
+    _="on htmx:wsAfterSend reset() me"
+>
+    {% csrf_token %}
+    {{form.body}}
+    <button class="mb-2 focus:outline-none border-none bg-transparent text-blue-600" type="submit">
+        Comment
+    </button>
+</form>

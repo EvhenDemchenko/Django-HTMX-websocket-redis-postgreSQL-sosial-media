@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-3xl text-center mt-5 text-red-500 ">Chat deleted</h1>
+
+        <form method="post" action=" {% url "chat:chat-delete" chat.chat_name %}">
+            {% csrf_token%}
+
+            <p>Are you shoure that you want to delete <b>{{ chat.group_chat_name }}</b> ? </p>
+            <button class="btn btn-danger" type="submit">
+                delete chat
+            </button>
+        </form>
+
+
+    </div>
+{% endblock content %}  
