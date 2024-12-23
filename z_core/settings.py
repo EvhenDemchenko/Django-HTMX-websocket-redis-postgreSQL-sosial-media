@@ -12,10 +12,10 @@ ENVIROMENT = 'production'
 
 SECRET_KEY = env('SECRET_KEY')
 
-# if ENVIROMENT == 'development':
-DEBUG = True
-# else:
-#     DEBUG = False
+if ENVIROMENT == 'development':
+    DEBUG = True
+else:
+    DEBUG = False
 
 ALLOWED_HOSTS = ['friend-book-ssm.onrender.com','localhost', '127.0.0.1' ]
 

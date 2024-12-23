@@ -20,10 +20,12 @@ application = ProtocolTypeRouter({
         AuthMiddlewareStack(
             URLRouter(
                 chat_routing.websocket_urlpatterns + users_routing.websocket_urlpatterns
-            )
+            ),
+            websocket_connect_timeout=60
         )
     )
 })
+
 
 # import asyncio
 # async def shutdown_server():
