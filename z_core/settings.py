@@ -17,9 +17,12 @@ if ENVIROMENT == 'development':
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ['friend-book-ssm.onrender.com','localhost', '127.0.0.1' ]
+if ENVIROMENT == 'development':
+    ALLOWED_HOSTS = ['*','localhost', '127.0.0.1' ]
+else:
+    ALLOWED_HOSTS = ['friend-book-ssm.onrender.com','localhost', '127.0.0.1' ]
+    CSRF_TRUSTED_ORIGINS =["https://friend-book-ssm.onrender.com"]
 
-CSRF_TRUSTED_ORIGINS =["https://friend-book-ssm.onrender.com"]
 
 INTERNAL_IPS=[
     '127.0.0.1',
@@ -171,26 +174,28 @@ if ENVIROMENT == 'production':
     CLOUDINARY_STORAGE = {
         'CLOUDINARY_URL': "cloudinary://199398896329512:R0w_GDciMlBCri2esbmcG_02_Zo@dsnftekpz",
     }
+else:
+    MEDIA_ROOT = BASE_DIR / "media"
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 LOGIN_REDIRECT_URL = 'posts:post-feed'
 
-# if ENVIROMENT == 'development':
-#     CHANNEL_LAYERS = {
-#         'default': {
-#             'BACKEND': 'channels.layers.InMemoryChannelLayer'
-#         }
-#     }
-# else:
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [(env('REDIS_URL'))],
+if ENVIROMENT == 'development':
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels.layers.InMemoryChannelLayer'
+        }
+    }
+else:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [(env('REDIS_URL'))],
+            },
         },
-    },
-}
+    }
 
 
 
